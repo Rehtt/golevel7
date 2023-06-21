@@ -1,4 +1,4 @@
-module golevel7
+module github.com/Rehtt/golevel7
 
 go 1.12
 
