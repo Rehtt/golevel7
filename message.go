@@ -262,11 +262,21 @@ func (m *Message) Unmarshal(it interface{}) error {
 		fld := stt.Field(i)
 		r := fld.Tag.Get("hl7")
 		if r != "" {
-			if val, _ := m.Find(r); val != "" {
+			if val, _ := m.FindAll(r); len(val) > 0 {
 				if st.Field(i).CanSet() {
 					// TODO support fields other than string
 					//fldT := st.Field(i).Type()
-					st.Field(i).SetString(strings.TrimSpace(val))
+					switch st.Field(i).Kind() {
+					case reflect.Slice:
+						slice := reflect.MakeSlice(reflect.TypeOf(""), len(val), len(val))
+						for j, v := range val {
+							slice.Index(j).SetString(v)
+						}
+						st.Set(slice)
+					case reflect.String:
+						st.Field(i).SetString(strings.TrimSpace(val[0]))
+					}
+
 				}
 			}
 		}
