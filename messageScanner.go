@@ -33,7 +33,7 @@ func (ms *MessageScanner) Scan() (gotOne bool) {
 			gotOne = true
 		}
 		if gotOne {
-			ms.thisMsg = NewMessage(ms.b.Bytes())
+			ms.thisMsg, _ = NewMessage(ms.b.Bytes())
 		} else {
 			ms.thisMsg = nil
 		}
