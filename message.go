@@ -268,11 +268,7 @@ func (m *Message) Unmarshal(it interface{}) error {
 					//fldT := st.Field(i).Type()
 					switch st.Field(i).Kind() {
 					case reflect.Slice:
-						slice := reflect.MakeSlice(reflect.TypeOf(""), len(val), len(val))
-						for j, v := range val {
-							slice.Index(j).SetString(v)
-						}
-						st.Set(slice)
+						st.Set(reflect.ValueOf(val))
 					case reflect.String:
 						st.Field(i).SetString(strings.TrimSpace(val[0]))
 					}
